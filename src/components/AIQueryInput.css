@@ -1,0 +1,361 @@
+.ai-query-bar {
+  background: #000000;
+  border-bottom: 1px solid #ff6600;
+  padding: 2px 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  min-height: 20px;
+}
+
+.ai-query-bar.disabled {
+  background: #000000;
+  border-bottom-color: #333333;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.query-label {
+  color: #00ff88;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.query-message {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.query-form {
+  margin-bottom: 8px;
+}
+
+.query-input-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.query-input-wrapper {
+  flex: 1;
+  position: relative;
+  display: flex;
+  gap: 8px;
+}
+
+.query-input {
+  flex: 1;
+  background: #c0c0c0;
+  border: 1px inset #cccccc;
+  color: #000000;
+  padding: 3px 5px;
+  border-radius: 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 12px;
+  resize: none;
+  min-height: 15px;
+  max-height: 63px;
+  transition: none;
+}
+
+.query-input:focus {
+  outline: none;
+  border-color: #aaaaaa;
+  background: #d0d0d0;
+}
+
+.query-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.query-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.query-submit {
+  background: #c0c0c0;
+  border: 1px outset #cccccc;
+  color: #000000;
+  padding: 3px 8px;
+  border-radius: 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: none;
+  white-space: nowrap;
+  min-width: 63px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.query-submit:hover:not(:disabled) {
+  background: #d0d0d0;
+  transform: none;
+}
+
+.query-submit:active:not(:disabled) {
+  border: 1px inset #cccccc;
+  background: #a0a0a0;
+}
+
+.query-submit:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.loading-spinner {
+  font-size: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.query-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.examples-label {
+  color: #888;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 5px;
+}
+
+.examples-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.example-query {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.example-query:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: rgba(0, 255, 136, 0.3);
+  color: #00ff88;
+}
+
+.ai-status {
+  background: #111111;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin-top: 8px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ff6600;
+  font-size: 12px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff6600;
+}
+
+.status-dot.pulsing {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .ai-query-bar {
+    padding: 10px 12px;
+  }
+  
+  .query-input-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .query-submit {
+    width: 100%;
+  }
+  
+  .query-examples {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .examples-list {
+    width: 100%;
+  }
+  
+  .example-query {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* Query History Styles */
+.history-toggle {
+  background: #000000;
+  border: 1px solid #333333;
+  color: #0066ff;
+  padding: 8px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-toggle:hover:not(:disabled) {
+  background: #111111;
+  border-color: #0066ff;
+}
+
+.history-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.query-history-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #000000;
+  border: 1px solid #333333;
+  border-radius: 3px;
+  z-index: 1000;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: #111111;
+  border-bottom: 1px solid #333333;
+  color: #ff6600;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.close-history {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.close-history:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.history-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.history-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.history-item:hover {
+  background: #111111;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-query {
+  color: #fff;
+  font-size: 13px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.history-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: #888;
+}
+
+.history-date {
+  color: #666;
+}
+
+.history-confidence {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+/* Scrollbar styling for history list */
+.history-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 3px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+  background: #0066ff;
+}

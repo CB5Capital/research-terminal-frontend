@@ -1,0 +1,129 @@
+.case-selector {
+  position: relative;
+  z-index: 1000;
+}
+
+.case-selector-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 102, 0, 0.1);
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: none;
+  min-width: 120px;
+  height: 26px;
+}
+
+.case-selector-button:hover {
+  background: rgba(255, 102, 0, 0.2);
+  border-color: rgba(255, 102, 0, 0.5);
+}
+
+.case-selector-button:active {
+  background: rgba(255, 102, 0, 0.3);
+  border-color: #ff6600;
+}
+
+.selector-label {
+  color: #ff6600;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.selector-value {
+  color: #ffffff;
+  font-weight: normal;
+  flex: 1;
+  font-size: 13px;
+}
+
+.selector-arrow {
+  color: #ff6600;
+  transition: none;
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+.selector-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.case-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #000000;
+  border: 1px outset #666666;
+  border-top: none;
+  border-radius: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1001;
+  box-shadow: none;
+}
+
+.dropdown-content {
+  /* Content inherits height from parent */
+}
+
+.case-item {
+  padding: 4px 6px;
+  border-bottom: 1px solid #222222;
+  cursor: pointer;
+  transition: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.case-item:hover,
+.case-item.highlighted {
+  background: rgba(255, 102, 0, 0.1);
+  border-left: 1px solid #ff6600;
+  padding-left: 1px;
+}
+
+.case-item.selected {
+  background: rgba(255, 102, 0, 0.1);
+  border-left: 1px solid #ff6600;
+  padding-left: 1px;
+}
+
+.case-item:last-child {
+  border-bottom: none;
+}
+
+.case-item-id {
+  font-size: 13px;
+  font-weight: normal;
+  color: #ffffff;
+  flex: 1;
+  margin-right: 8px;
+  line-height: 1.2;
+}
+
+.case-item-name {
+  font-size: 11px;
+  color: #888888;
+  white-space: nowrap;
+  font-style: italic;
+}

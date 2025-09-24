@@ -1,0 +1,132 @@
+.dashboard-nav {
+  background: linear-gradient(135deg, #0a0a0a, #1f1f1f);
+  border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  min-height: 45px;
+  overflow-x: auto;
+  box-shadow: 0 1px 5px rgba(0, 255, 136, 0.1);
+}
+
+.dashboard-nav.disabled {
+  background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-nav-label {
+  color: #888;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.dashboard-message {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+  overflow-x: auto;
+  padding: 2px 0;
+}
+
+.dashboard-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+.dashboard-tab:hover {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: rgba(0, 255, 136, 0.3);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.dashboard-tab.active {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: #00ff88;
+  color: #00ff88;
+  box-shadow: 0 2px 8px rgba(0, 255, 136, 0.3);
+}
+
+.dashboard-tab.active .dashboard-name {
+  color: #fff;
+  font-weight: bold;
+}
+
+.dashboard-icon {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+}
+
+.dashboard-name {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-tabs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.dashboard-tabs::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.dashboard-tabs::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.3);
+  border-radius: 2px;
+}
+
+.dashboard-tabs::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.5);
+}
+
+@media (max-width: 768px) {
+  .dashboard-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  
+  .dashboard-tabs {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .dashboard-tab {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+  
+  .dashboard-name {
+    font-size: 9px;
+  }
+}

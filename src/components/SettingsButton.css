@@ -1,0 +1,86 @@
+.settings-button {
+  position: relative;
+  z-index: 1000;
+}
+
+.settings-button-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 102, 0, 0.1);
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  color: #ff6600;
+  padding: 4px 8px;
+  border-radius: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: none;
+  width: 32px;
+  height: 26px;
+}
+
+.settings-button-trigger:hover {
+  background: rgba(255, 102, 0, 0.2);
+  border-color: rgba(255, 102, 0, 0.5);
+}
+
+.settings-button-trigger:active {
+  background: rgba(255, 102, 0, 0.3);
+  border-color: #ff6600;
+}
+
+.dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.settings-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #000000;
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  border-radius: 0;
+  margin-top: 1px;
+  box-shadow: none;
+  z-index: 1001;
+  min-width: 180px;
+}
+
+.dropdown-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 102, 0, 0.2);
+  cursor: pointer;
+  transition: none;
+  background: #000000;
+}
+
+.settings-item:hover,
+.settings-item.highlighted {
+  background: rgba(255, 102, 0, 0.1);
+  border-left: 2px solid #ff6600;
+  padding-left: 10px;
+}
+
+.settings-item:last-child {
+  border-bottom: none;
+}
+
+.settings-item-label {
+  color: #ffffff;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+}

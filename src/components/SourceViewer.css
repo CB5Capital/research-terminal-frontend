@@ -1,0 +1,359 @@
+/* Source Viewer - Full Screen Modal */
+.source-viewer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.source-viewer-container {
+  background: #000000;
+  border: 2px solid #333333;
+  border-radius: 4px;
+  width: 95%;
+  max-width: 1200px;
+  height: 90%;
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+
+/* Header */
+.source-viewer-header {
+  background: #111111;
+  border-bottom: 1px solid #333333;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.source-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.source-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.source-icon {
+  font-size: 18px;
+}
+
+.source-filename {
+  color: #ff6600;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.source-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.relevance-badge {
+  background: rgba(255, 102, 0, 0.2);
+  border: 1px solid #ff6600;
+  color: #ff6600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.relevance-badge.relevance-high {
+  background: rgba(255, 102, 0, 0.2);
+  border-color: #ff6600;
+  color: #ff6600;
+}
+
+.relevance-badge.relevance-medium {
+  background: rgba(0, 102, 255, 0.2);
+  border-color: #0066ff;
+  color: #0066ff;
+}
+
+.relevance-badge.relevance-low {
+  background: rgba(51, 51, 51, 0.3);
+  border-color: #333333;
+  color: #888888;
+}
+
+.file-stats {
+  color: #888888;
+  font-size: 10px;
+}
+
+.source-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+}
+
+.source-search {
+  background: #000000;
+  border: 1px solid #333333;
+  border-radius: 2px;
+  padding: 6px 10px;
+  color: #cccccc;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  width: 200px;
+}
+
+.source-search:focus {
+  outline: none;
+  border-color: #ff6600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #ff6600;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+.close-button:hover {
+  background: rgba(255, 102, 0, 0.1);
+}
+
+.close-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+/* Content */
+.source-viewer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  background: #000000;
+}
+
+.source-loading, .source-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: #cccccc;
+}
+
+.loading-spinner {
+  font-size: 32px;
+  animation: spin 2s linear infinite;
+  color: #ff6600;
+  margin-bottom: 16px;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #ff4444;
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #ff6600, #cc5200);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.retry-btn:hover {
+  background: linear-gradient(135deg, #cc5200, #aa4400);
+}
+
+.source-content-wrapper {
+  padding: 20px;
+}
+
+.source-insight-section {
+  background: rgba(255, 102, 0, 0.05);
+  border: 1px solid rgba(255, 102, 0, 0.2);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.source-insight-section h4 {
+  color: #ff6600;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 102, 0, 0.3);
+  padding-bottom: 4px;
+}
+
+.source-key-insight {
+  color: #cccccc;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.source-full-content {
+  background: #111111;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  padding: 16px;
+}
+
+.source-full-content h4 {
+  color: #ff6600;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #333333;
+  padding-bottom: 8px;
+}
+
+.source-text-content {
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 500px;
+  overflow-y: auto;
+  background: #111111;
+  border: 1px solid #333333;
+  border-radius: 2px;
+  padding: 16px;
+}
+
+.search-highlight {
+  background: rgba(255, 255, 0, 0.3);
+  color: #ffffff;
+  padding: 1px 2px;
+  border-radius: 1px;
+}
+
+/* Footer */
+.source-viewer-footer {
+  background: #111111;
+  border-top: 1px solid #333333;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navigation-hint {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #888888;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.key-hint {
+  background: rgba(255, 102, 0, 0.1);
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  color: #ff6600;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+/* Scrollbar Styling */
+.source-viewer-content::-webkit-scrollbar,
+.source-text-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.source-viewer-content::-webkit-scrollbar-track,
+.source-text-content::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+.source-viewer-content::-webkit-scrollbar-thumb,
+.source-text-content::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.source-viewer-content::-webkit-scrollbar-thumb:hover,
+.source-text-content::-webkit-scrollbar-thumb:hover {
+  background: #444444;
+}
+
+/* Spin animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .source-viewer-overlay {
+    padding: 10px;
+  }
+  
+  .source-viewer-container {
+    width: 100%;
+    height: 95%;
+  }
+  
+  .source-viewer-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .source-actions {
+    justify-content: space-between;
+  }
+  
+  .source-search {
+    width: 150px;
+  }
+  
+  .source-content-wrapper {
+    padding: 12px;
+  }
+  
+  .source-text-content {
+    font-size: 12px;
+    max-height: 400px;
+  }
+}
