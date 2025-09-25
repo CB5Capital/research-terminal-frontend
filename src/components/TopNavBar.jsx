@@ -2,10 +2,12 @@ import React, { useState, forwardRef, useImperativeHandle } from 'react'
 import CaseSelector from './CaseSelector'
 import DashboardQuery from './DashboardQuery'
 import DataManager from './DataManager'
+import ResearchQuestions from './ResearchQuestions'
 import './TopNavBar.css'
 
 const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, onCaseSelect, onQuerySubmit, existingDashboards, queryHistory, queryInputRef, caseSelectorRef }, ref) => {
   const [isDataManagerOpen, setIsDataManagerOpen] = useState(false)
+  const [isResearchQuestionsOpen, setIsResearchQuestionsOpen] = useState(false)
 
   const handleDataManagerOpen = () => {
     setIsDataManagerOpen(true)
@@ -15,9 +17,18 @@ const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, o
     setIsDataManagerOpen(false)
   }
 
+  const handleResearchQuestionsOpen = () => {
+    setIsResearchQuestionsOpen(true)
+  }
+
+  const handleResearchQuestionsClose = () => {
+    setIsResearchQuestionsOpen(false)
+  }
+
   // Expose methods to parent component
   useImperativeHandle(ref, () => ({
-    openDataManager: handleDataManagerOpen
+    openDataManager: handleDataManagerOpen,
+    openResearchQuestions: handleResearchQuestionsOpen
   }))
 
   return (
@@ -30,6 +41,14 @@ const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, o
             title="Add Data (Shift+D for sidebar)"
           >
             Add Data
+          </button>
+          
+          <button 
+            className="research-questions-button"
+            onClick={handleResearchQuestionsOpen}
+            title="Research Questions (Shift+R)"
+          >
+            Research Questions
           </button>
           
           <CaseSelector 
@@ -58,6 +77,12 @@ const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, o
         onClose={handleDataManagerClose}
         cases={cases}
         initialCaseId={activeCase?.id}
+      />
+      
+      <ResearchQuestions
+        isOpen={isResearchQuestionsOpen}
+        onClose={handleResearchQuestionsClose}
+        activeCase={activeCase}
       />
     </div>
   )

@@ -213,6 +213,12 @@ function App() {
         queryInputRef.current.clearAndFocus()
       }
 
+      // Check if Shift+R is pressed to open research questions
+      if (event.key === 'R' && event.shiftKey && topNavBarRef.current) {
+        event.preventDefault()
+        topNavBarRef.current.openResearchQuestions()
+      }
+
 
     }
 

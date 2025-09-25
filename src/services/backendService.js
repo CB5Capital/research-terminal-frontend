@@ -5,8 +5,12 @@
 
 class BackendService {
   constructor() {
-    this.baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+    console.log('Environment VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL)
+    // Hardcoded for now to test
+    this.baseUrl = 'https://research-terminal-backend.onrender.com'
     this.apiUrl = `${this.baseUrl}/api`
+    console.log('BackendService initialized with baseUrl:', this.baseUrl)
+    console.log('BackendService apiUrl:', this.apiUrl)
   }
 
   async generateDashboard(query, caseInfo) {
@@ -599,6 +603,45 @@ class BackendService {
 
     } catch (error) {
       console.error('Failed to continue chat:', error)
+      throw error
+    }
+  }
+
+  // Research Questions methods
+  async getResearchQuestions(caseName) {
+    try {
+      const response = await fetch(`${this.apiUrl}/cases/${caseName}/research-questions`)
+      
+      if (!response.ok) {
+        throw new Error(`Failed to get research questions: ${response.status}`)
+      }
+
+      return await response.json()
+
+    } catch (error) {
+      console.error('Failed to get research questions:', error)
+      return { research_questions: [] }
+    }
+  }
+
+  async updateResearchQuestions(caseName, questions) {
+    try {
+      const response = await fetch(`${this.apiUrl}/cases/${caseName}/research-questions`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ research_questions: questions })
+      })
+      
+      if (!response.ok) {
+        throw new Error(`Failed to update research questions: ${response.status}`)
+      }
+
+      return await response.json()
+
+    } catch (error) {
+      console.error('Failed to update research questions:', error)
       throw error
     }
   }
