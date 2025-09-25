@@ -231,11 +231,87 @@
   flex: 1;
 }
 
-.question-content p {
-  margin: 0 0 12px 0;
+.question-text {
+  margin-bottom: 16px;
+}
+
+.question-text h4 {
+  margin: 0 0 8px 0;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.question-meta {
+  font-size: 10px;
+  color: #888888;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.question-notes {
+  margin-bottom: 16px;
+  background: rgba(255, 102, 0, 0.03);
+  border: 1px solid rgba(255, 102, 0, 0.15);
+  border-radius: 3px;
+  padding: 12px;
+}
+
+.notes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.notes-label {
+  font-size: 11px;
+  color: #ff6600;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.edit-notes-btn {
+  background: rgba(255, 102, 0, 0.1);
+  border: 1px solid rgba(255, 102, 0, 0.3);
+  color: #ff6600;
+  padding: 3px 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.edit-notes-btn:hover:not(:disabled) {
+  background: rgba(255, 102, 0, 0.2);
+  border-color: rgba(255, 102, 0, 0.5);
+}
+
+.edit-notes-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.notes-content p {
+  margin: 0;
+  color: #cccccc;
+  font-size: 12px;
   line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.notes-empty {
+  color: #666666;
+  font-size: 11px;
+  font-style: italic;
+  text-align: center;
+  padding: 8px;
 }
 
 .question-actions {
@@ -320,7 +396,22 @@
   letter-spacing: 0.5px;
 }
 
-.question-textarea {
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 12px;
+  color: #ff6600;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+
+.question-textarea,
+.notes-textarea {
   width: 100%;
   background: #000000;
   border: 1px solid #333333;
@@ -330,16 +421,25 @@
   font-size: 13px;
   border-radius: 2px;
   resize: vertical;
-  min-height: 100px;
   box-sizing: border-box;
 }
 
-.question-textarea:focus {
+.question-textarea {
+  min-height: 80px;
+}
+
+.notes-textarea {
+  min-height: 140px;
+}
+
+.question-textarea:focus,
+.notes-textarea:focus {
   outline: none;
   border-color: #ff6600;
 }
 
-.question-textarea::placeholder {
+.question-textarea::placeholder,
+.notes-textarea::placeholder {
   color: #666666;
 }
 
