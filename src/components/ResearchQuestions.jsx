@@ -47,6 +47,19 @@ function ResearchQuestions({ isOpen, onClose, activeCase }) {
     setIsLoading(true)
     try {
       const result = await backendService.getResearchQuestions(activeCase.id)
+      console.log('Received research questions:', result.research_questions)
+      
+      // Debug: log each question
+      if (result.research_questions) {
+        result.research_questions.forEach((q, i) => {
+          if (typeof q === 'string') {
+            console.log(`Question ${i+1} (legacy): "${q}"`)
+          } else {
+            console.log(`Question ${i+1} (new): "${q.question}", notes: "${q.notes}"`)
+          }
+        })
+      }
+      
       setQuestions(result.research_questions || [])
     } catch (error) {
       console.error('Failed to load research questions:', error)
@@ -224,6 +237,14 @@ function ResearchQuestions({ isOpen, onClose, activeCase }) {
                       const question = isLegacyFormat ? questionObj : questionObj.question
                       const notes = isLegacyFormat ? '' : (questionObj.notes || '')
                       const updatedAt = isLegacyFormat ? null : questionObj.updated_at
+                      
+                      // Debug logging
+                      console.log(`Rendering question ${index + 1}:`, {
+                        isLegacyFormat,
+                        question,
+                        notes,
+                        originalObj: questionObj
+                      })
 
                       return (
                         <div key={index} className="question-item">
