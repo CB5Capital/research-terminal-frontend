@@ -5,6 +5,7 @@ import './DataManagerBar.css'
 function DataManagerBar({ activeCase, cases, onClose }) {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadMessage, setUploadMessage] = useState('')
+  const [uploadStep, setUploadStep] = useState('')
   const [urlInput, setUrlInput] = useState('')
   const [noteInput, setNoteInput] = useState('')
   const [activeTab, setActiveTab] = useState('files')
@@ -15,14 +16,40 @@ function DataManagerBar({ activeCase, cases, onClose }) {
 
     setIsUploading(true)
     setUploadMessage('')
+    setUploadStep('Uploading files...')
 
     try {
       const uploadPromises = Array.from(files).map(file => 
         backendService.uploadFile(activeCase.id, file)
       )
       
-      await Promise.all(uploadPromises)
-      setUploadMessage(`✅ Successfully uploaded ${files.length} file(s)!`)
+      setUploadStep('Generating dashboard items...')
+      const results = await Promise.all(uploadPromises)
+      
+      // Count successful dashboard generations
+      let totalDashboardItems = 0
+      let failedGenerations = 0
+      
+      results.forEach(result => {
+        if (result.dashboard_generation) {
+          if (result.dashboard_generation.success) {
+            totalDashboardItems += result.dashboard_generation.items_created || 0
+          } else {
+            failedGenerations++
+          }
+        }
+      })
+      
+      let message = `✅ Successfully uploaded ${files.length} file(s)`
+      if (totalDashboardItems > 0) {
+        message += ` and generated ${totalDashboardItems} dashboard items`
+      }
+      if (failedGenerations > 0) {
+        message += ` (${failedGenerations} dashboard generation(s) failed)`
+      }
+      message += '!'
+      
+      setUploadMessage(message)
       
       // Clear input
       event.target.value = ''
@@ -31,6 +58,7 @@ function DataManagerBar({ activeCase, cases, onClose }) {
       setUploadMessage(`❌ Failed to upload files: ${err.message}`)
     } finally {
       setIsUploading(false)
+      setUploadStep('')
     }
   }
 
@@ -39,15 +67,29 @@ function DataManagerBar({ activeCase, cases, onClose }) {
 
     setIsUploading(true)
     setUploadMessage('')
+    setUploadStep('Scraping webpage...')
 
     try {
+      setUploadStep('Generating dashboard items...')
       const result = await backendService.uploadUrl(activeCase.id, urlInput.trim())
-      setUploadMessage(`✅ Successfully scraped webpage content! (${result.filename})`)
+      
+      let message = `✅ Successfully scraped webpage content! (${result.filename})`
+      if (result.dashboard_generation) {
+        if (result.dashboard_generation.success) {
+          const itemsCreated = result.dashboard_generation.items_created || 0
+          message += ` Generated ${itemsCreated} dashboard items.`
+        } else {
+          message += ` Dashboard generation failed.`
+        }
+      }
+      
+      setUploadMessage(message)
       setUrlInput('')
     } catch (err) {
       setUploadMessage(`❌ Failed to scrape URL: ${err.message}`)
     } finally {
       setIsUploading(false)
+      setUploadStep('')
     }
   }
 
@@ -56,15 +98,29 @@ function DataManagerBar({ activeCase, cases, onClose }) {
 
     setIsUploading(true)
     setUploadMessage('')
+    setUploadStep('Inserting note...')
 
     try {
-      await backendService.insertNote(activeCase.id, noteInput.trim())
-      setUploadMessage('✅ Successfully inserted note!')
+      setUploadStep('Generating dashboard items...')
+      const result = await backendService.insertNote(activeCase.id, noteInput.trim())
+      
+      let message = '✅ Successfully inserted note!'
+      if (result.dashboard_generation) {
+        if (result.dashboard_generation.success) {
+          const itemsCreated = result.dashboard_generation.items_created || 0
+          message += ` Generated ${itemsCreated} dashboard items.`
+        } else {
+          message += ` Dashboard generation failed.`
+        }
+      }
+      
+      setUploadMessage(message)
       setNoteInput('')
     } catch (err) {
       setUploadMessage(`❌ Failed to insert note: ${err.message}`)
     } finally {
       setIsUploading(false)
+      setUploadStep('')
     }
   }
 
@@ -116,6 +172,11 @@ function DataManagerBar({ activeCase, cases, onClose }) {
       </div>
 
       <div className="bar-content">
+        {uploadStep && isUploading && (
+          <div className="upload-step">
+            {uploadStep}
+          </div>
+        )}
         {uploadMessage && (
           <div className={`upload-message ${uploadMessage.startsWith('✅') ? 'success' : 'error'}`}>
             {uploadMessage}
@@ -136,7 +197,7 @@ function DataManagerBar({ activeCase, cases, onClose }) {
                 className="file-input"
               />
               <label htmlFor="bar-file-upload" className={`file-upload-button ${isUploading ? 'uploading' : ''}`}>
-                {isUploading ? 'Uploading...' : 'Choose Files'}
+                {isUploading ? 'Processing...' : 'Choose Files'}
               </label>
             </div>
           </div>
@@ -160,7 +221,7 @@ function DataManagerBar({ activeCase, cases, onClose }) {
                 disabled={isUploading || !urlInput.trim()}
                 className="upload-button"
               >
-                {isUploading ? 'Scraping...' : 'Scrape'}
+                {isUploading ? 'Processing...' : 'Scrape'}
               </button>
             </div>
           </div>
@@ -184,7 +245,7 @@ function DataManagerBar({ activeCase, cases, onClose }) {
                 disabled={isUploading || !noteInput.trim()}
                 className="upload-button"
               >
-                {isUploading ? 'Inserting...' : 'Insert Note'}
+                {isUploading ? 'Processing...' : 'Insert Note'}
               </button>
             </div>
           </div>

@@ -10,6 +10,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
   // Upload states
   const [isUploading, setIsUploading] = useState(false)
   const [uploadMessage, setUploadMessage] = useState('')
+  const [uploadStep, setUploadStep] = useState('')
   const [urlInput, setUrlInput] = useState('')
   const [noteInput, setNoteInput] = useState('')
 
@@ -45,14 +46,40 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
 
     setIsUploading(true)
     setUploadMessage('')
+    setUploadStep('Uploading files...')
 
     try {
       const uploadPromises = Array.from(files).map(file => 
         backendService.uploadFile(selectedCaseId, file)
       )
       
-      await Promise.all(uploadPromises)
-      setUploadMessage(`✅ Successfully uploaded ${files.length} file(s)!`)
+      setUploadStep('Generating dashboard items...')
+      const results = await Promise.all(uploadPromises)
+      
+      // Count successful dashboard generations
+      let totalDashboardItems = 0
+      let failedGenerations = 0
+      
+      results.forEach(result => {
+        if (result.dashboard_generation) {
+          if (result.dashboard_generation.success) {
+            totalDashboardItems += result.dashboard_generation.items_created || 0
+          } else {
+            failedGenerations++
+          }
+        }
+      })
+      
+      let message = `✅ Successfully uploaded ${files.length} file(s)`
+      if (totalDashboardItems > 0) {
+        message += ` and generated ${totalDashboardItems} dashboard items`
+      }
+      if (failedGenerations > 0) {
+        message += ` (${failedGenerations} dashboard generation(s) failed)`
+      }
+      message += '!'
+      
+      setUploadMessage(message)
       
       // Clear input
       event.target.value = ''
@@ -61,6 +88,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
       setUploadMessage(`❌ Failed to upload files: ${err.message}`)
     } finally {
       setIsUploading(false)
+      setUploadStep('')
     }
   }
 
@@ -69,12 +97,25 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
 
     setIsUploading(true)
     setUploadMessage('')
+    setUploadStep('Scraping webpage...')
 
     try {
       console.log('Starting URL scrape for:', urlInput.trim())
+      setUploadStep('Generating dashboard items...')
       const result = await backendService.uploadUrl(selectedCaseId, urlInput.trim())
       console.log('Scrape result:', result)
-      setUploadMessage(`✅ Successfully scraped webpage content! (${result.filename})`)
+      
+      let message = `✅ Successfully scraped webpage content! (${result.filename})`
+      if (result.dashboard_generation) {
+        if (result.dashboard_generation.success) {
+          const itemsCreated = result.dashboard_generation.items_created || 0
+          message += ` Generated ${itemsCreated} dashboard items.`
+        } else {
+          message += ` Dashboard generation failed.`
+        }
+      }
+      
+      setUploadMessage(message)
       
       // Clear input
       setUrlInput('')
@@ -84,6 +125,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
       setUploadMessage(`❌ Failed to scrape URL: ${err.message}`)
     } finally {
       setIsUploading(false)
+      setUploadStep('')
     }
   }
 
@@ -92,10 +134,23 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
 
     setIsUploading(true)
     setUploadMessage('')
+    setUploadStep('Inserting note...')
 
     try {
-      await backendService.insertNote(selectedCaseId, noteInput.trim())
-      setUploadMessage('✅ Successfully inserted note!')
+      setUploadStep('Generating dashboard items...')
+      const result = await backendService.insertNote(selectedCaseId, noteInput.trim())
+      
+      let message = '✅ Successfully inserted note!'
+      if (result.dashboard_generation) {
+        if (result.dashboard_generation.success) {
+          const itemsCreated = result.dashboard_generation.items_created || 0
+          message += ` Generated ${itemsCreated} dashboard items.`
+        } else {
+          message += ` Dashboard generation failed.`
+        }
+      }
+      
+      setUploadMessage(message)
       
       // Clear input
       setNoteInput('')
@@ -104,6 +159,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
       setUploadMessage(`❌ Failed to insert note: ${err.message}`)
     } finally {
       setIsUploading(false)
+      setUploadStep('')
     }
   }
 
@@ -225,6 +281,11 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
               <h3>Upload Content to DataLib/{selectedCaseId}/</h3>
             </div>
 
+            {uploadStep && isUploading && (
+              <div className="upload-step">
+                {uploadStep}
+              </div>
+            )}
             {uploadMessage && (
               <div className={`upload-message ${uploadMessage.startsWith('✅') ? 'success' : 'error'}`}>
                 {uploadMessage}
@@ -247,7 +308,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
                   className="file-input"
                 />
                 <label htmlFor="file-upload" className={`file-upload-button ${isUploading ? 'uploading' : ''}`}>
-                  {isUploading ? 'Uploading...' : 'Choose Files'}
+                  {isUploading ? 'Processing...' : 'Choose Files'}
                 </label>
               </div>
             </div>
@@ -272,7 +333,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
                   disabled={isUploading || !selectedCaseId || !urlInput.trim()}
                   className="upload-button"
                 >
-                  {isUploading ? 'Scraping...' : 'Scrape URL'}
+                  {isUploading ? 'Processing...' : 'Scrape URL'}
                 </button>
               </div>
             </div>
@@ -297,7 +358,7 @@ function DataManager({ isOpen, onClose, cases, initialCaseId = null }) {
                   disabled={isUploading || !selectedCaseId || !noteInput.trim()}
                   className="upload-button"
                 >
-                  {isUploading ? 'Inserting...' : 'Insert Note'}
+                  {isUploading ? 'Processing...' : 'Insert Note'}
                 </button>
               </div>
             </div>
