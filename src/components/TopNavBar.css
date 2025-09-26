@@ -95,6 +95,39 @@
   outline: none;
 }
 
+.new-project-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: none;
+  height: 26px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.new-project-button:hover {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.new-project-button:active {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: #4caf50;
+}
+
+.new-project-button:focus {
+  outline: none;
+}
+
 @media (max-width: 768px) {
   .nav-content {
     flex-direction: column;

@@ -3,11 +3,13 @@ import CaseSelector from './CaseSelector'
 import DashboardQuery from './DashboardQuery'
 import DataManager from './DataManager'
 import ResearchQuestions from './ResearchQuestions'
+import NewProject from './NewProject'
 import './TopNavBar.css'
 
-const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, onCaseSelect, onQuerySubmit, existingDashboards, queryHistory, queryInputRef, caseSelectorRef }, ref) => {
+const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, onCaseSelect, onQuerySubmit, existingDashboards, queryHistory, queryInputRef, caseSelectorRef, onProjectCreated }, ref) => {
   const [isDataManagerOpen, setIsDataManagerOpen] = useState(false)
   const [isResearchQuestionsOpen, setIsResearchQuestionsOpen] = useState(false)
+  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false)
 
   const handleDataManagerOpen = () => {
     setIsDataManagerOpen(true)
@@ -25,10 +27,26 @@ const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, o
     setIsResearchQuestionsOpen(false)
   }
 
+  const handleNewProjectOpen = () => {
+    setIsNewProjectOpen(true)
+  }
+
+  const handleNewProjectClose = () => {
+    setIsNewProjectOpen(false)
+  }
+
+  const handleProjectCreated = (project) => {
+    setIsNewProjectOpen(false)
+    if (onProjectCreated) {
+      onProjectCreated(project)
+    }
+  }
+
   // Expose methods to parent component
   useImperativeHandle(ref, () => ({
     openDataManager: handleDataManagerOpen,
-    openResearchQuestions: handleResearchQuestionsOpen
+    openResearchQuestions: handleResearchQuestionsOpen,
+    openNewProject: handleNewProjectOpen
   }))
 
   return (
@@ -49,6 +67,14 @@ const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, o
             title="Research Questions (Shift+R)"
           >
             Research Questions
+          </button>
+          
+          <button 
+            className="new-project-button"
+            onClick={handleNewProjectOpen}
+            title="Create New Project (Shift+N)"
+          >
+            New Project
           </button>
           
           <CaseSelector 
@@ -83,6 +109,12 @@ const TopNavBar = forwardRef(({ cases, casesLoading, activeCase, currentQuery, o
         isOpen={isResearchQuestionsOpen}
         onClose={handleResearchQuestionsClose}
         activeCase={activeCase}
+      />
+      
+      <NewProject
+        isOpen={isNewProjectOpen}
+        onClose={handleNewProjectClose}
+        onProjectCreated={handleProjectCreated}
       />
     </div>
   )

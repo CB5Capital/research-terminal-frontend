@@ -645,6 +645,30 @@ class BackendService {
       throw error
     }
   }
+
+  // Project creation method
+  async createNewProject(projectData) {
+    try {
+      const response = await fetch(`${this.apiUrl}/projects/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(projectData)
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.text()
+        throw new Error(`Failed to create project: ${response.status} - ${errorData}`)
+      }
+
+      return await response.json()
+
+    } catch (error) {
+      console.error('Failed to create project:', error)
+      throw error
+    }
+  }
 }
 
 export default new BackendService()

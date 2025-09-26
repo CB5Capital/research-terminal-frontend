@@ -75,6 +75,31 @@ function App() {
     }
   }
 
+  const loadCases = async () => {
+    try {
+      setCasesLoading(true)
+      const casesResult = await backendService.getAllCases()
+      setCases(casesResult.cases)
+      console.log('Refreshed cases from backend:', casesResult.cases)
+    } catch (error) {
+      console.error('Failed to load cases:', error)
+    } finally {
+      setCasesLoading(false)
+    }
+  }
+
+  const handleProjectCreated = async (project) => {
+    // Refresh the cases list to include the new project
+    await loadCases()
+    
+    // Auto-select the newly created project
+    const newCase = {
+      id: project.project_id,
+      name: project.project_name
+    }
+    await handleCaseSelect(newCase)
+  }
+
   const handleQuerySubmit = async (query, dashboardId = null, fromHistory = false, displayQuery = null) => {
     if (!activeCase) return
 
@@ -219,6 +244,12 @@ function App() {
         topNavBarRef.current.openResearchQuestions()
       }
 
+      // Check if Shift+N is pressed to create new project
+      if (event.key === 'N' && event.shiftKey && topNavBarRef.current) {
+        event.preventDefault()
+        topNavBarRef.current.openNewProject()
+      }
+
 
     }
 
@@ -247,6 +278,7 @@ function App() {
         queryHistory={getQueryHistory()}
         queryInputRef={queryInputRef}
         caseSelectorRef={caseSelectorRef}
+        onProjectCreated={handleProjectCreated}
       />
       
       <div className="terminal-content">
